@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kellyegan/So-it-begins/issues"
   },
-  "homepage": "https://github.com/kellyegan/So-it-begins#readme"
+  "homepage": "https://github.com/kellyegan/So-it-begins#readme",
+  "dependencies": {
+    "rita": "^1.2.12"
+  }
 }
