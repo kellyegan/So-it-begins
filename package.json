@@ -1,0 +1,24 @@
+{
+  "name": "soitbegins",
+  "version": "0.0.1",
+  "description": "A novel generator for NaNoGenMo 2017",
+  "main": "create.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kellyegan/So-it-begins.git"
+  },
+  "keywords": [
+    "generative",
+    "novel",
+    "text"
+  ],
+  "author": "Kelly Egan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kellyegan/So-it-begins/issues"
+  },
+  "homepage": "https://github.com/kellyegan/So-it-begins#readme"
+}
