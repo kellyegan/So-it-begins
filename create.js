@@ -1,9 +1,25 @@
 const rita = require('rita')
 const fs = require('fs')
+const config = require('./config.js')
+const flickr = require('./flickr-search.js')
 
-const draftIndex = 0
+//Search flickr for some elephants
+flickr.search("", function (error, response) {
+  if( error ) {
+    console.error(error)
+  }
+
+  response.photos.photo.forEach( function (element){
+    let url = flickr.getImageURL(element.farm, element.server, element.id, element.secret, "jpg")
+    console.log(url)
+  })
+  //console.log(response.photos)
+})
+
+const draftIndex = 1
 const targetWordCount = 50000
 
+// Create a string of random words
 let novelText = rita.randomWord()
 
 for( let i = 0; i < targetWordCount - 1; i++) {
@@ -23,7 +39,6 @@ fs.writeFile("drafts/draft_" + padNumber( draftIndex, "0", 3 ) + ".txt", novelTe
 function padNumber( number, padCharacter, totalCharacters ) {
   if( draftIndex != 0 ) {
     const numberToPad = totalCharacters - 1 - Math.floor(Math.log10(number))
-    console.log(numberToPad)
     return padCharacter.repeat(numberToPad) + number
   } else {
     return "0".repeat(totalCharacters)
