@@ -28,12 +28,6 @@ flickr.photos.search({
     console.log("Saved list of photos")
   })
 
-  // results.body.photos.photo.forEach( function (photo) {
-  //   let url = getImageURL(photo.farm, photo.server, photo.id, photo.secret, "jpg")
-  //
-  //   console.log(url)
-  // })
-
 }).catch(function (error) {
   console.error('ERROR', error)
 });
@@ -41,6 +35,6 @@ flickr.photos.search({
 function getImageURL(farm_id, server_id, id, secret, file_type) {
   return `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}.jpg`
 
-  //Original image 
+  //Original image
   //return `https://farm${farm-id}.staticflickr.com/${server-id}/${id}_${o-secret}_o.${file-type}`
 }
