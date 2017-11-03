@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/kellyegan/So-it-begins#readme",
   "dependencies": {
-    "node-flickr": "^1.0.0",
+    "flickr-sdk": "^3.5.0",
     "rita": "^1.2.12"
   }
 }

@@ -1,20 +1,5 @@
 const rita = require('rita')
 const fs = require('fs')
-const config = require('./config.js')
-const flickr = require('./flickr-search.js')
-
-//Search flickr for some elephants
-flickr.search("", function (error, response) {
-  if( error ) {
-    console.error(error)
-  }
-
-  response.photos.photo.forEach( function (element){
-    let url = flickr.getImageURL(element.farm, element.server, element.id, element.secret, "jpg")
-    console.log(url)
-  })
-  //console.log(response.photos)
-})
 
 const draftIndex = 1
 const targetWordCount = 50000
