@@ -4,6 +4,8 @@ const Flickr = require('flickr-sdk');
 
 const flickr = new Flickr(config.flickr.api_key)
 
+const outputPath = "data/flickr-search-results.json"
+
 flickr.photos.search({
   text: "",
   license: "1,2,3,4,5,6,8,9,10"
@@ -21,19 +23,19 @@ flickr.photos.search({
 
   const photosJSONstring = JSON.stringify( results.body.photos.photo )
 
-  fs.writeFile("data/flickr-photos.json", photosJSONstring, 'utf8', function(error) {
+  fs.writeFile(outputPath, photosJSONstring, 'utf8', function(error) {
     if(error) {
       return console.error(error)
     }
-    console.log("Saved list of photos")
+    console.log(`"${outputPath}" saved successfully.`)
   })
 
 }).catch(function (error) {
   console.error('ERROR', error)
 });
 
-function getImageURL(farm_id, server_id, id, secret, file_type) {
-  return `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}.jpg`
+function getImageURL(photo) {
+  return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`
 
   //Original image
   //return `https://farm${farm-id}.staticflickr.com/${server-id}/${id}_${o-secret}_o.${file-type}`
