@@ -24,6 +24,7 @@
   "dependencies": {
     "clarifai": "^2.4.0",
     "flickr-sdk": "^3.5.0",
-    "rita": "^1.2.12"
+    "rita": "^1.2.12",
+    "tracery-grammar": "^2.7.3"
   }
 }
