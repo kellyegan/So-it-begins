@@ -5,8 +5,8 @@ const grammar = tracery.createGrammar({
  'subject': ['I was #context#', '#noun.a# was #context#'],
  'noun': ['elephant','walrus','lawyer', 'beetle', 'butterfly'],
  'context': ['in #interior.a#', 'on #exterior.a#', '#travel#'],
- 'travel': ['#verb# #direction# #noun.a#', '#verb# #direction# #interior.a#', '#verb# #direction# #exterior#'],
- 'verb': ['running', 'walking', 'swimming', 'flying', 'crawling'],
+ 'travel': ['#verb# #direction# #noun.a#', '#verb# #direction# #interior.a#', '#verb# #direction# #exterior.a#'],
+ 'verb': ['running', 'walking', 'swimming', 'flying', 'crawling', 'riding #noun.a#'],
  'direction': ['away from', 'towards'],
  'interior': ['car', 'tank', 'cabin', 'airplane', 'hospital', 'room', 'mess hall', 'cargo hold', 'cave' ],
  'exterior': ['mountain', 'hill', 'ship', 'operating table', 'skyscraper'],
@@ -15,6 +15,6 @@ const grammar = tracery.createGrammar({
 
 grammar.addModifiers(tracery.baseEngModifiers);
 
-for(let i = 0; i < 20; i++) {
+for(let i = 0; i < 40; i++) {
   console.log(grammar.flatten('#origin#'));
 }
