@@ -6,9 +6,26 @@ const flickr = new Flickr(config.flickr.api_key)
 
 const outputPath = "data/flickr-search-results.json"
 
+
+/**
+ * Flickr license codes
+ * 0 - All Rights Reserved
+ * 1 - Attribution-NonCommercial-ShareAlike License https://creativecommons.org/licenses/by-nc-sa/2.0/
+ * 2 - Attribution-NonCommercial License https://creativecommons.org/licenses/by-nc/2.0/
+ * 3 - Attribution-NonCommercial-NoDerivs License https://creativecommons.org/licenses/by-nc-nd/2.0/
+ * 4 - Attribution License https://creativecommons.org/licenses/by/2.0/
+ * 5 - Attribution-ShareAlike License https://creativecommons.org/licenses/by-sa/2.0/
+ * 6 - Attribution-NoDerivs License https://creativecommons.org/licenses/by-nd/2.0/
+ * 7 - No known copyright restrictions https://www.flickr.com/commons/usage/
+ * 8 - United States Government Work http://www.usa.gov/copyright.shtml
+ * 9 - Public Domain Dedication (CC0) https://creativecommons.org/publicdomain/zero/1.0/
+ * 10 - Public Domain Mark https://creativecommons.org/publicdomain/mark/1.0/
+ *
+ */
+
 flickr.photos.search({
   text: "",
-  license: "1,2,3,4,5,6,8,9,10"
+  license: "1,2,4,5,7,8,9,10"
 }).then(function (results) {
   const totalPhotos = results.body.photos.total
   const photosPerPage = results.body.photos.perpage
