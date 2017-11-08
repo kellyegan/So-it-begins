@@ -2,8 +2,8 @@ const fs = require("fs")
 const config = require('./config.js')
 const Clarifai = require("clarifai")
 
-const inputPath = "data/flickr-photos.json"
-const outputPath = "data/clarifai-photos.json"
+const inputPath = "data/flickr-search-results.json"
+const outputPath = "data/clarifai-results.json"
 
 const clarifaiApp = new Clarifai.App({
   apiKey: config.clarifai.api_key
@@ -17,7 +17,9 @@ fs.readFile(inputPath, "utf8", function (error, results){
   const photoSearchResults = JSON.parse(results)
   let urlList = []
 
-  photoSearchResults.forEach( function (photo){
+  let photoSelection = photoSearchResults.slice(127, 219)
+
+  photoSelection.forEach( function (photo){
     urlList.push( getImageURL( photo ) )
   })
 
@@ -27,12 +29,12 @@ fs.readFile(inputPath, "utf8", function (error, results){
   function(response) {
     console.log("Success");
     const clarifaiResponseJSONString = JSON.stringify( response )
-    fs.writeFile("data/clarifaiResponse.json", clarifaiResponseJSONString, "utf8", function (error, results){
+    fs.writeFile(outputPath, clarifaiResponseJSONString, "utf8", function (error, results){
       if( error ) {
         console.error( error )
       }
 
-      console.log(`"data/clarifaiResponse.json" successfully saved.`)
+      console.log(`${outputPath} successfully saved.`)
     })
   },
   function(err) {
