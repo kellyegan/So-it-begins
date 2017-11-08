@@ -23,20 +23,50 @@ const outputPath = "data/flickr-search-results.json"
  *
  */
 
-flickr.photos.search({
-  text: "",
-  license: "1,2,4,5,7,8,9,10"
-}).then(function (results) {
+let searchParameters = {
+   text: "-sdasm",
+   license: "1,2,4,5,7,8,9,10",
+   is_commons: "true"
+ }
+
+flickr.photos.search(searchParameters).then(function (results) {
   const totalPhotos = results.body.photos.total
   const photosPerPage = results.body.photos.perpage
 
-  let chosenPhotos = [];
+  let chosenIndexes = new Map();
 
+  //Find random photos within search results
   for( let i = 0; i < 100; i++) {
-    const index = Math.floor( Math.random() * totalPhotos )
+    let index = Math.floor( Math.random() * totalPhotos )
+
     let pageIndex = Math.floor( index / photosPerPage )
     let photoIndex = index % photosPerPage
+
+    let photoArray = chosenIndexes.get(pageIndex)
+    if( photoArray != undefined ) {
+      photoArray.push(photoIndex)
+      chosenIndexes.set(pageIndex, photoArray)
+    } else {
+      chosenIndexes.set(pageIndex, [photoIndex])
+    }
   }
+
+  let requests = Promise.resolve()
+  let chosenPhotos = []
+
+  chosenIndexes.forEach( function (photoIndexes, pageIndex){
+    requests = requests.then( function (){
+      searchParameters["page"] = pageIndex
+      return flickr.photos.search(searchParameters)
+    }).then( function (response){
+      photoIndexes.forEach( function(index){
+        console.log(results.body.photos.photo[index])
+        chosenPhotos.push( results.body.photos.photo[index] )
+      })
+    }).catch( function (error){
+      console.error(error);
+    })
+  })
 
   const photosJSONstring = JSON.stringify( results.body.photos.photo )
 
