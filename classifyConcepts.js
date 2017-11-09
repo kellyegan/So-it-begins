@@ -1,4 +1,5 @@
 const fs = require("fs")
+const nlp = require("nlp-compromise")
 
 //Photobank for testing. Approximately 200 images already selected from flickr with clarifai concepts
 const photobank = require("./data/photobank-combined.json")
