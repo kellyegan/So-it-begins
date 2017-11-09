@@ -6,9 +6,10 @@ const commons = require('./data/commons-institutions.json')
 
 const flickr = new Flickr(config.flickr.api_key)
 const institutions = commons.institutions.institution
+
 const outputPath = "data/flickr-search-results.json"
 
-const photosToPick = 40
+const photosToPick = 10
 
 // Search for licenses that allow for creative reuse
 const searchParameters = {
