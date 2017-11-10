@@ -27,6 +27,7 @@ fs.readFile(inputPath, "utf8", function (error, results){
   function(clarifaiResponse) {
     console.log("Success");
 
+
     //Create a map of urls to concept lists
     let clarifaiConcepts = clarifaiResponse.outputs.reduce( function(map, clarifai){
       let url = clarifai.input.data.image.url

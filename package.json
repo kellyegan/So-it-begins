@@ -23,8 +23,8 @@
   "homepage": "https://github.com/kellyegan/So-it-begins#readme",
   "dependencies": {
     "clarifai": "^2.4.0",
+    "compromise": "^11.1.0",
     "flickr-sdk": "^3.5.0",
-    "nlp-compromise": "^6.7.4",
     "rita": "^1.2.12",
     "tracery-grammar": "^2.7.3"
   }
