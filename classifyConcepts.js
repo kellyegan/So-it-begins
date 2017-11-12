@@ -29,28 +29,42 @@ console.log("----------------------------------------------------------------");
 let images = pickImages(10)
 
 images.forEach( function(image) {
-
   const weightedConcepts = weightConcepts( image )
-  const categorizedConcepts = categorizeConcepts( weightedConcepts, categoryLookup)
+  const categorizedConcepts = categorizeConcepts( weightedConcepts, categoryLookup )
 
   console.log("-----------");
-  categorizedConcepts.forEach( (categoryList, category) => {
-    console.log(category);
-    categoryList.forEach( (concept) => {
-      console.log(`  ${concept.name} ${concept.value}`);
-    })
-  })
 
+  for( let i = 0; i < 10; i++) {
+    let hypothesis = makeHypothesis( categorizedConcepts)
+    console.log(`${hypothesis.category} ${hypothesis.hypothesis}`);
+  }
+
+  console.log(image.url_o);
 })
+
+function makeHypothesis( imageConcepts, category = null ) {
+  if( category == null ) {
+    const categories = Array.from(imageConcepts.keys())
+    const categoryIndex = Math.floor( Math.random() * categories.length )
+    category = categories[categoryIndex]
+  }
+
+  const choices = imageConcepts.get(category)
+  const choiceIndex = Math.floor( Math.random() * choices.length )
+  const choice = choices[choiceIndex].name
+
+  return {category: category, hypothesis: choice}
+}
+
 
 /**
  *  Create a lookup table from a nested object of category lists
  */
 function createCategoryIndex( categories ) {
-  let categoryIndex = {}
+  let categoryIndex = new Map()
   for( category in categories ){
     categories[category].forEach( (term) => {
-      categoryIndex[term] = category
+      categoryIndex.set(term, category)
     })
   }
   return categoryIndex
@@ -59,13 +73,13 @@ function createCategoryIndex( categories ) {
 function categorizeConcepts( concepts, categoryIndex) {
   // Create a map of concepts based on categories.
   let categorizedConcepts = concepts.reduce( (map, concept) => {
-    if( categoryIndex.hasOwnProperty(concept.name) ){
+    if( categoryIndex.has(concept.name) ){
       let categoryList = []
       if( map.has(categoryIndex[concept.name]) ) {
-        categoryList = map.get(categoryIndex[concept.name])
+        categoryList = map.get(categoryIndex.get(concept.name))
       }
       categoryList.push(concept)
-      map.set(categoryIndex[concept.name], categoryList)
+      map.set(categoryIndex.get(concept.name), categoryList)
     } else {
       let uncategorizedList = []
       if( map.has("Uncategorized") ) {
@@ -90,7 +104,7 @@ function weightConcepts( image ) {
   let weightedConcepts = image.concepts.map( function(concept){
     terms.forEach( function (term){
       if( term.normal == concept.name){
-        concept.value *= 2.0
+        concept.value *= 1.2
       }
     })
     return concept
