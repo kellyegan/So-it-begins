@@ -34,26 +34,69 @@ images.forEach( function(image) {
 
   console.log("-----------");
 
-  for( let i = 0; i < 10; i++) {
-    let hypothesis = makeHypothesis( categorizedConcepts)
-    console.log(`${hypothesis.category} ${hypothesis.hypothesis}`);
+  //What kind of image is it?
+  let imageTypeHypothesis = []
+  addHypothesis( "Medium", categorizedConcepts, imageTypeHypothesis)
+  addHypothesis( "Style", categorizedConcepts, imageTypeHypothesis)
+  console.log(imageTypeHypothesis);
+
+  //Are there people?
+  let peopleHypothesis = []
+  let people = makeHypothesis( categorizedConcepts, ["People"])
+  if( people != null ) {
+    peopleHypothesis.push(people)
+    if( people.hypothesis == "people") {
+      addHypothesis( "Quantity", categorizedConcepts, peopleHypothesis)
+      addHypothesis( "Gender", categorizedConcepts, peopleHypothesis)
+      addHypothesis( "Profession", categorizedConcepts, peopleHypothesis)
+    }
   }
+  console.log(peopleHypothesis);
+
+  //Where is it?
+  let environmentHypothesis = []
+  addHypothesis( "Environment", categorizedConcepts, environmentHypothesis)
+
+  //What else is there?
+  let objectHypothesis = []
+  addHypothesis( "Vehicle", categorizedConcepts, objectHypothesis)
+  addHypothesis( "Object", categorizedConcepts, objectHypothesis)
+  console.log(objectHypothesis)
+
+  let uncategorizedHypothesis = []
+  for( let i = 0; i < 3; i++) {
+    addHypothesis( "Uncategorized", categorizedConcepts, uncategorizedHypothesis)
+  }
+  console.log(uncategorizedHypothesis)
 
   console.log(image.url_o);
 })
 
-function makeHypothesis( imageConcepts, category = null ) {
-  if( category == null ) {
+function addHypothesis( category, concepts, list) {
+  let hypothesis = makeHypothesis( concepts, [category])
+  if( hypothesis != null ) {
+    list.push(hypothesis)
+    return true
+  }
+  return false
+}
+
+function makeHypothesis( imageConcepts, categoryList = null ) {
+  let category = ""
+  if( categoryList == null ) {
     const categories = Array.from(imageConcepts.keys())
-    const categoryIndex = Math.floor( Math.random() * categories.length )
-    category = categories[categoryIndex]
+    category = chooseRandom( categories )
+  } else {
+    category = chooseRandom( categoryList )
   }
 
   const choices = imageConcepts.get(category)
-  const choiceIndex = Math.floor( Math.random() * choices.length )
-  const choice = choices[choiceIndex].name
-
-  return {category: category, hypothesis: choice}
+  if( choices ) {
+    const choice = chooseRandom(choices).name
+    return {category: category, hypothesis: choice}
+  } else {
+    return null
+  }
 }
 
 
@@ -106,11 +149,12 @@ function weightConcepts( image ) {
       if( term.normal == concept.name){
         concept.value *= 1.2
       }
+      concept.value = Math.floor(concept.value * 100)
     })
     return concept
   })
 
-  weightedConcepts.sort( function(a,b){
+  weightedConcepts.sort( (a,b) => {
     if(a.value < b.value) {
       return 1
     } else if( a.value > b.value) {
@@ -151,4 +195,23 @@ function cleanText(text) {
   const removeExtraWhiteSpace = tagsRemoved.replace(/(\s)+/g, "$1")
 
   return unescape(removeExtraWhiteSpace)
+}
+
+/**
+ *  Choose a random float between two numbers
+ */
+function randomBetween( min, max ){
+  return Math.random() * (max - min + 1) + min
+}
+
+function randomIntBetween( min, max ){
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+/**
+ *  Choose a random element from an array
+ */
+function chooseRandom( array ) {
+  const index = Math.floor( Math.random() * array.length )
+  return array[index]
 }
