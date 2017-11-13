@@ -67,25 +67,25 @@ exports.weightDescriptions = function ( image ) {
 /**
  *  Take categorized concept map with weights and turn into concept pools
  */
-exports.makePools = function (concepts) {
+exports.createPools = function (concepts) {
   const categorizedPools =  Array.from( concepts.keys() ).reduce( (categoryMap, category) => {
-    let pool = classify.makePool( concepts.get(category) )
+    let pool = exports.createPool( concepts.get(category) )
     categoryMap.set(category, pool)
     return categoryMap
   }, new Map() )
+  return categorizedPools
 }
 
 /**
  *  Create a pool of concepts from an array of weighted concepts
  */
-exports.makePool = function ( concepts ) {
+exports.createPool = function ( concepts ) {
   let conceptPool = []
   //No need to create a hundred copies of one concept
   if( concepts.length > 1) {
     const total = concepts.reduce( (sum, concept) => {
       return sum + concept.value
     }, 0)
-
     conceptPool = concepts.reduce( (pool, concept) => {
       let quantity = Math.floor( 100 * concept.value / total )
       for( let i = 0; i < quantity; i++ ){
@@ -96,6 +96,5 @@ exports.makePool = function ( concepts ) {
   } else {
     conceptPool = [concepts[0].name]
   }
-
   return conceptPool
 }
