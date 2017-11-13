@@ -19,3 +19,14 @@ exports.chooseRandom = function ( array ) {
   const index = Math.floor( Math.random() * array.length )
   return array[index]
 }
+
+/**
+ *  Clean up text, mostly description
+ */
+exports.cleanText = function (text) {
+  const unescaped = unescape(text)
+  const tagsRemoved = unescaped.replace(/(<([^>]+)>)/ig,"")
+  const removeExtraWhiteSpace = tagsRemoved.replace(/(\s)+/g, "$1")
+
+  return unescape(removeExtraWhiteSpace)
+}
