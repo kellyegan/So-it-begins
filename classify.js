@@ -65,7 +65,18 @@ exports.weightDescriptions = function ( image ) {
 }
 
 /**
- *  Create a pool of concepts from a list of weighted concepts
+ *  Take categorized concept map with weights and turn into concept pools
+ */
+exports.makePools = function (concepts) {
+  const categorizedPools =  Array.from( concepts.keys() ).reduce( (categoryMap, category) => {
+    let pool = classify.makePool( concepts.get(category) )
+    categoryMap.set(category, pool)
+    return categoryMap
+  }, new Map() )
+}
+
+/**
+ *  Create a pool of concepts from an array of weighted concepts
  */
 exports.makePool = function ( concepts ) {
   let conceptPool = []
