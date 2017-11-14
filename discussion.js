@@ -34,11 +34,11 @@ exports.makeHypothesis = function (conceptPool, type = null) {
 
   switch (type) {
     case "Image type":
-  
+      hypothesis = decideImageType( conceptPool )
       break
     case "People":
       //["People", "Quantity", "Gender", "Age", "Profession"]
-
+      hypothesis = decidePeople( conceptPool )
       break
     case "Building":
 
@@ -57,6 +57,69 @@ exports.makeHypothesis = function (conceptPool, type = null) {
   if( choices ) {
     const choice = util.chooseRandom(choices)
     return {type: "hypothesis", hypothesis: [{category: category, choice: choice}]}
+  }
+
+  return null
+}
+
+function decideImageType( conceptPool ) {
+  let hypothesis = {}
+  hypothesis.type = "hypothesis"
+  const medium = exports.makeChoice(conceptPool, "Medium")
+  const style = exports.makeChoice(conceptPool, "Style")
+  const color = exports.makeChoice(conceptPool, "Color")
+
+  hypothesis.details = []
+
+  if( medium != null ) {
+    hypothesis.details.push( {category: "Medium", choice: medium.choice} )
+  }
+  if( style != null ) {
+    hypothesis.details.push( {category: "Style", choice: style.choice} )
+  }
+  if( color != null ) {
+    hypothesis.details.push( {category: "Color", choice: color.choice} )
+  }
+
+  if( hypothesis.details.length > 0 ) {
+    return hypothesis
+  }
+
+  return null
+}
+
+function decidePeople( conceptPool ) {
+  //["People", "Quantity", "Gender", "Age", "Profession"]
+  let hypothesis = {}
+  hypothesis.type = "hypothesis"
+  hypothesis.details = []
+
+  const people = exports.makeChoice(conceptPool, "People")
+  if( people != null ) {
+    hypothesis.details.push( {category: "People", choice: people.choice} )
+    if( people.choice != "no person" ) {
+      const quantity = exports.makeChoice(conceptPool, "Quantity")
+      if( quantity != null ) {
+        hypothesis.details.push( {category: "Quantity", choice: quantity.choice} )
+      }
+      const gender = exports.makeChoice(conceptPool, "Gender")
+      if( gender != null ) {
+        if( gender.certainty > 0.6 ) {
+          hypothesis.details.push( {category: "Gender", choice: gender.choice} )
+        } else {
+          hypothesis.details.push( {category: "Gender", choice: "mixed"} )
+        }
+      }
+      const age = exports.makeChoice(conceptPool, "Age")
+      if( age != null ) {
+        hypothesis.details.push( {category: "Age", choice: age.choice} )
+      }
+      const profession = exports.makeChoice(conceptPool, "Profession")
+      if( profession != null ) {
+        hypothesis.details.push( {category: "Profession", choice: profession.choice} )
+      }
+    }
+    return hypothesis
   }
 
   return null
@@ -90,7 +153,7 @@ exports.makeChoice = function ( conceptPool, category ) {
       goal += 1
       tests += 2
     }
-    if(tests > 7) {
+    if(tests > 9) {
       return null
     }
   }
