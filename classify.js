@@ -21,13 +21,16 @@ exports.categorize = function ( concepts, categoryLookup) {
   // Create a map of concepts based on categories.
   let categorizedConcepts = concepts.reduce( (map, concept) => {
     if( categoryLookup.has(concept.name) ){
+      const category = categoryLookup.get(concept.name)
+      //Known category
       let categoryList = []
-      if( map.has(categoryLookup[concept.name]) ) {
-        categoryList = map.get(categoryLookup.get(concept.name))
+      if( map.has(category) ) {
+        categoryList = map.get(category)
       }
       categoryList.push(concept)
-      map.set(categoryLookup.get(concept.name), categoryList)
+      map.set(category, categoryList)
     } else {
+      //Uncategorized
       let uncategorizedList = []
       if( map.has("Uncategorized") ) {
         uncategorizedList = map.get("Uncategorized")
